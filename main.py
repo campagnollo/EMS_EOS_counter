@@ -27,9 +27,9 @@ def main():
         print("✅ File loaded successfully!")
 
         # Parse ISO8601 timestamps (UTC) and convert to local timezone
-        ack_df['lastReceived'] = pd.to_datetime(ack_df['lastReceived'], utc=True, errors='coerce')
+        ack_df['lastReceived'] = pd.to_datetime(ack_df['firingStartTime'], utc=True, errors='coerce')
         ack_df['lastReceived_local'] = ack_df['lastReceived'].dt.tz_convert('America/New_York')
-        res_df['lastReceived'] = pd.to_datetime(res_df['lastReceived'], utc=True, errors='coerce')
+        res_df['lastReceived'] = pd.to_datetime(res_df['firingStartTime'], utc=True, errors='coerce')
         res_df['lastReceived_local'] = res_df['lastReceived'].dt.tz_convert('America/New_York')
 
         # Current local time (aware)
@@ -46,8 +46,6 @@ def main():
         #     print(t)
         print(f"Number of EMS cases in Acknowledge:{ack_recent.lastReceived_local.size}")
         print(f"Number of EMS cases in Resolved:{res_recent.lastReceived_local.size}")
-        #matches_tot[1].unlink()
-        #matches_tot[0].unlink()
         print("")
 
     except FileNotFoundError:
@@ -58,9 +56,8 @@ def main():
         print(f"❌ Unexpected error: {e}")
 
     finally:
-        pass
-        #matches_tot[1].unlink()
-        #matches_tot[0].unlink()
+        matches_tot[1].unlink()
+        matches_tot[0].unlink()
 
 
 
